@@ -10,12 +10,14 @@ Repositorio único de la materia **Desarrollo Backend**. Proyecto transversal: *
 | Entrega | Carpeta | Estado |
 | ------- | ------- | ------ |
 | [Clase 1 · El viaje de una petición](activities/class-01/) | `activities/class-01/` | ✅ Entregado |
-| Clase 2 · HTTP como contrato | `activities/class-02/` | ⏳ Pendiente |
-| Clase 3 · Recursos, estado y reglas | `activities/class-03/` | ⏳ Pendiente |
+| [Clase 2 · HTTP como contrato](activities/class-02/) | `activities/class-02/` | ✅ Entregado |
+| [Clase 3 · Recursos, estado y reglas](activities/class-03/) | `activities/class-03/` | ✅ Entregado |
 
 ## Proyecto transversal
 
-El `project/` crece clase a clase. Ver `project/README.md` (pendiente de crear en la clase 3).
+El `project/` es el **proyecto personal de fin de trimestre**: se mantiene reservado y
+crecerá clase a clase. En la clase 3 el entregable usa su propia carpeta
+`activities/class-03/proyecto/` (ver su `README.md`).
 
 ## Estructura
 
@@ -24,11 +26,8 @@ El `project/` crece clase a clase. Ver `project/README.md` (pendiente de crear e
 ├── activities/
 │   ├── class-01/          → Entrega 01
 │   ├── class-02/          → Entrega 02
-│   └── class-03/          → Entrega 03
-├── project/               → Proyecto transversal
-│   ├── src/
-│   ├── tests/
-│   └── docs/architecture/
+│   └── class-03/          → Entrega 03 (incluye project/ propio de la clase)
+├── project/               → Proyecto personal de fin de trimestre (reservado)
 └── resources-notes/       → Apuntes y lecturas
 ```
 
@@ -42,5 +41,5 @@ Requisito general: Node.js LTS (`node --version`).
 | Actividad | Tag | Estado |
 | --------- | --- | ------ |
 | 01 | `class-01-submission` | ✅ |
-| 02 | `class-02-lite-analysis` / `class-02-submission` | ⏳ |
-| 03 | `class-03-design` / `class-03-submission` | ⏳ |
+| 02 | `class-02-lite-analysis` / `class-02-submission` | ✅ |
+| 03 | `class-03-design` / `class-03-submission` | ✅ |
