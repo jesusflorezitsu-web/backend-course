@@ -16,3 +16,6 @@ Thumbs.db
 # Editor
 .vscode/
 .idea/
+
+# Material de referencia del curso (incluye la solucion oficial del profesor)
+activities/class-03/activity resources/
