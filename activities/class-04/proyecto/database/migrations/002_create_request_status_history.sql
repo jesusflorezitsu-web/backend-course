@@ -36,3 +36,9 @@ CREATE TABLE request_status_history (
       new_status IN ('open', 'in_progress', 'resolved', 'closed', 'cancelled')
     )
 );
+
+-- El historial crece linealmente por transición; el endpoint
+-- GET /requests/:id/history filtra por request_id, así que indexamos esa
+-- columna para evitar un seq scan a medida que la tabla escala.
+CREATE INDEX request_status_history_request_id_idx
+  ON request_status_history(request_id);

@@ -3,6 +3,7 @@
 //
 //   findAll(filters, db = pool)                    -> rows[]
 //   findById(id, db = pool)                        -> row | null
+//   findByIdForUpdate(id, db)                      -> row | null (FOR UPDATE, uso en transaccion)
 //   insertRequest({title, description, priority}, db) -> row (INSERT ... RETURNING)
 //   updateRequest(id, changes, db)                 -> row | null (UPDATE ... RETURNING)
 //   insertStatusHistory(requestId, prev, next, db) -> void
@@ -43,6 +44,17 @@ export async function findAll(filters = {}, db = pool) {
 export async function findById(id, db = pool) {
   const result = await db.query(
     `SELECT ${TABLE_COLUMNS} FROM requests WHERE id = $1`,
+    [id]
+  );
+  return result.rows[0] ?? null;
+}
+
+// Locking read for use INSIDE a transaction: it re-reads the current status
+// with the transactional client and locks the row so concurrent PATCHes
+// cannot create stale transitions (e.g. two clients moving open -> resolved).
+export async function findByIdForUpdate(id, db = pool) {
+  const result = await db.query(
+    `SELECT ${TABLE_COLUMNS} FROM requests WHERE id = $1 FOR UPDATE`,
     [id]
   );
   return result.rows[0] ?? null;

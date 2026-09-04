@@ -4,7 +4,8 @@
 // Contracts:
 //   mapRequestRow(row)  -> { id, title, description, priority, status,
 //                            createdAt, updatedAt }
-//   mapHistoryRow(row)  -> { previousStatus, newStatus, changedAt }
+//   mapHistoryRow(row)  -> { id, requestId, previousStatus, newStatus,
+//                            changedAt }
 
 export function mapRequestRow(row) {
   return {
@@ -20,6 +21,8 @@ export function mapRequestRow(row) {
 
 export function mapHistoryRow(row) {
   return {
+    id: Number(row.id),
+    requestId: Number(row.request_id),
     previousStatus: row.previous_status,
     newStatus: row.new_status,
     changedAt: row.changed_at

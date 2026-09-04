@@ -80,7 +80,7 @@ curl -i "http://localhost:3000/requests?status=open&priority=high"
 * **Éxito**: `200` con un arreglo de
 
   ```json
-  { "previousStatus": "open", "newStatus": "in_progress", "changedAt": "2026-08-29T18:26:13.739Z" }
+  { "id": 2, "requestId": 1, "previousStatus": "open", "newStatus": "in_progress", "changedAt": "2026-08-29T18:26:13.739Z" }
   ```
 
 * **Errores**: `404 REQUEST_NOT_FOUND`.
@@ -89,6 +89,10 @@ curl -i "http://localhost:3000/requests?status=open&priority=high"
   ```bash
   curl -i http://localhost:3000/requests/1/history
   ```
+
+> Nota (diseño de la entrega 04): el evento incluye `id` y `requestId` — es una extensión
+> aditiva sobre el contrato mínimo del starter. El orden es cronológico
+> (`changed_at ASC, id ASC`).
 
 ## `POST /requests`
 

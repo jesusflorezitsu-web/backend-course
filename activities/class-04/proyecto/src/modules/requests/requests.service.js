@@ -3,7 +3,7 @@
 // typed errors and the routes translate them into HTTP responses.
 //   category 'contract' -> 400, 'resource' -> 404, 'domain' -> 409.
 
-import { findAll, findById, insertRequest, updateRequest, insertStatusHistory, findHistory } from './requests.store.js';
+import { findAll, findById, findByIdForUpdate, insertRequest, updateRequest, insertStatusHistory, findHistory } from './requests.store.js';
 import { isValidStatus, isTerminal, canTransition, STATUSES } from './request-status.js';
 import { mapRequestRow, mapHistoryRow } from './request.mapper.js';
 import { withTransaction } from '../../database/transaction.js';
@@ -95,7 +95,9 @@ export async function patchRequest(id, body) {
   if (changes.title !== undefined) changes.title = changes.title.trim();
 
   const updated = await withTransaction(async (client) => {
-    const current = await findById(id, client);
+    // Lectura bloqueante con el cliente transaccional: el estado que se
+    // valida es el actual y concurrente, no una copia obsoleta en memoria.
+    const current = await findByIdForUpdate(id, client);
     assertExistingRequest(current);
 
     if (isTerminal(current.status)) {
