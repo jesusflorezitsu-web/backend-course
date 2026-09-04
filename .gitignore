@@ -19,3 +19,7 @@ Thumbs.db
 
 # Material de referencia del curso (incluye la solucion oficial del profesor)
 activities/class-03/activity resources/
+activities/class-04/activity resources/
+
+# Secretos del proyecto clase-04 (nunca se suben; pese a que el .gitignore interno lo cubre)
+activities/class-04/proyecto/.env
