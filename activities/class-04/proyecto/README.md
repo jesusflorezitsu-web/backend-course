@@ -1,72 +1,62 @@
-# Request API — starter de la Clase 4
+# Request API — Entrega 04 (backend persistente)
 
-Este proyecto es la Request API **tal como cerró la entrega 03** (módulo con array en
-memoria), más las piezas nuevas de infraestructura ya preparadas. Tu trabajo de la semana:
-convertirla en un backend persistente **sin romper el contrato HTTP**.
+Request API persistente en **PostgreSQL (Supabase)**: el array en memoria de la entrega 03
+fue reemplazado por las tablas `requests` y `request_status_history` sin romper el
+contrato HTTP de la clase 3. Cada transición queda registrada en el historial dentro de la
+misma transacción.
 
-Si tu propio proyecto de la entrega 03 está sano, **continúa sobre el tuyo** y toma de aquí
-solo las piezas nuevas (`database/`, `scripts/`, `src/database/`, `.env.example`).
+## Estado de la entrega
 
-## Qué viene listo y qué es tu trabajo
+Todo lo que el starter v4 dejaba "como tu trabajo" está **completado** y verificado
+(11/11 en `activities/class-04/test-matrix.md`):
 
-| Pieza                                   | Estado          |
-| --------------------------------------- | --------------- |
-| `src/database/pool.js`                  | Completo        |
-| `scripts/check-database.js` (`db:check`)| Completo        |
-| `database/migrations/001_…requests.sql` | Completa        |
-| `database/migrations/002_…history.sql`  | **Guiada (TODOs)** |
-| `database/seed.sql`                     | Completo        |
-| `src/database/transaction.js`           | **Tu trabajo** (contrato en el archivo) |
-| `src/modules/requests/requests.store.js`| **Tu trabajo**: migrar de array a SQL |
-| `src/modules/requests/requests.service.js` | **Tu trabajo** (esqueleto con contratos) |
-| `src/modules/requests/request.mapper.js`| **Tu trabajo** (contrato en el archivo) |
-| `src/modules/requests/requests.routes.js`| **Tu trabajo**: async + history + errores |
-| `src/modules/requests/request-status.js`| Completo — no cambia |
+| Pieza | Estado |
+| ----- | ------ |
+| `src/database/pool.js` | Completo |
+| `scripts/check-database.js` (`db:check`) | Completo |
+| `database/migrations/001_create_requests.sql` | Completa |
+| `database/migrations/002_create_request_status_history.sql` | Completa (+ índice `request_status_history_request_id_idx`) |
+| `database/seed.sql` | Completo (opcional; la verificación arranca desde cero) |
+| `src/database/transaction.js` | Completo (`withTransaction`) |
+| `src/modules/requests/requests.store.js` | Completo (SQL parametrizado, `db` opcional, `findByIdForUpdate`) |
+| `src/modules/requests/requests.service.js` | Completo (5 casos de uso + unidades de trabajo) |
+| `src/modules/requests/request.mapper.js` | Completo (`camelCase`, `description ?? ''`, history con `id`/`requestId`) |
+| `src/modules/requests/requests.routes.js` | Completo (async, `GET /requests/:id/history`, 400/404/409/503/500) |
+| `src/modules/requests/request-status.js` | Completo — sin cambios |
 
-## Puesta en marcha (fase 2 de la entrega)
+## Puesta en marcha
 
-1. **Supabase**: crea tu proyecto individual (`backend-course`), guarda la contraseña y
-   copia la cadena de **Session pooler (puerto 5432)** desde Connect.
-2. **Variables**:
+```bash
+# requiere: el archivo .env con DATABASE_URL (Session pooler, puerto 5432)
+npm install
+npm run db:check   # imprime base y versión — nunca la URL
+npm start          # Request API en http://localhost:3000
+```
 
-   ```bash
-   cp .env.example .env
-   # edita .env y coloca tu cadena. .env está en .gitignore: nunca se sube.
-   npm install
-   npm run db:check   # debe imprimir la base y la versión — nunca la URL
-   ```
-
-3. **Esquema**: en el SQL Editor de Supabase ejecuta, en orden:
-   `database/migrations/001_create_requests.sql`, luego tu `002` completada, luego
-   (opcional) `database/seed.sql`.
-
-## Orden de implementación sugerido (fase 3)
-
-1. Completa la migración `002` (sus TODOs salen de tu `transition-map.md`).
-2. `request.mapper.js` y las funciones de lectura del store (`findAll`, `findById`);
-   convierte los handlers de lectura a async y verifica con `curl`.
-3. `withTransaction` en `src/database/transaction.js`.
-4. `createRequest` en el service: inserción + historia `NULL → open` en una unidad.
-5. `patchRequest`: leer estado actual, validar transición, actualizar + historia, todo con
-   el mismo cliente.
-6. `GET /requests/:id/history`.
-7. Traducción de errores (400/404/409/500/503) sin filtrar secretos.
+El esquema (migraciones `001` + `002`) ya fue aplicado a la base de datos de la entrega.
 
 ## La prueba que define la entrega
 
 ```bash
 curl -i -X POST http://localhost:3000/requests -H "Content-Type: application/json" \
   -d '{ "title": "Survives restarts" }'
-# Ctrl+C, node src/server.js, y…
+# reiniciar el proceso (Ctrl+C, npm start) y…
 curl -i http://localhost:3000/requests/<id>   # 200: los datos sobrevivieron
 ```
 
-## Reglas que la revisión verifica
+Verificado con evidencia del reinicio (cambio de PID y logs) en
+`activities/class-04/test-matrix.md`, caso 9.
 
-* Consultas **parametrizadas** siempre; nada de valores interpolados en el SQL.
-* Un solo pool; clientes liberados en `finally`.
+## Diseño y reglas
+
+* Documentos oficiales: `activities/class-04/` (`resource-model.md`, `http-contract.md`,
+  `transition-map.md`, `test-matrix.md`; `ai-usage.md` y `reflection.md`).
+* Consultas **parametrizadas** siempre; un solo pool; clientes liberados en `finally`.
 * La transacción usa **un solo cliente** (nunca `pool.query()` dentro de la unidad).
-* Respuestas en camelCase vía mapper; ninguna fila cruda.
+* La transición se valida releyendo el estado con `SELECT ... FOR UPDATE` (cliente
+  transaccional), evitando lecturas obsoletas.
+* Respuestas en camelCase vía mapper; el historial expone `{ id, requestId,
+  previousStatus, newStatus, changedAt }` ordenado cronológicamente.
 * `.env` fuera del repositorio; evidencia sin la URL completa.
-* El contrato de la clase 3 intacto; `DELETE` sigue sin existir (decisión 001).
+* Contrato de la clase 3 intacto; `DELETE` sigue sin existir (decisión 001).
 * Sin ORM, sin `supabase-js`, sin acceso desde el frontend.
