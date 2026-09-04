@@ -67,4 +67,4 @@ rendimiento a medida que la tabla escala.
 
 ## Decisiones registradas
 
-* [001 — Cancel requests instead of deleting them](proyecto/docs/decisions/001-cancel-instead-of-delete.md)
+* [001 — Cancel requests instead of deleting them](project/docs/decisions/001-cancel-instead-of-delete.md)

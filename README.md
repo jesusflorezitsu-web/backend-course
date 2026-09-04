@@ -18,7 +18,7 @@ Repositorio único de la materia **Desarrollo Backend**. Proyecto transversal: *
 
 El `project/` es el **proyecto personal de fin de trimestre**: se mantiene reservado y
 crecerá clase a clase. En la clase 3 el entregable usa su propia carpeta
-`activities/class-03/proyecto/` y en la clase 4 `activities/class-04/proyecto/`
+`activities/class-03/project/` y en la clase 4 `activities/class-04/project/`
 (ver sus `README.md`).
 
 ## Estructura

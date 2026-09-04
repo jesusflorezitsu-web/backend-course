@@ -8,7 +8,7 @@ Registro honesto de dónde y cómo se usó IA en la clase 04, siguiendo la regla
 - El estudiante decidió basar la clase 4 en el **starter oficial v4**
   (`request-api-v4-starter`) en lugar de reutilizar por completo los recursos de la clase 3
   (decisión de continuidad documentada durante el armado).
-- La IA se limitó a: copiar el starter a `activities/class-04/proyecto/`, completar la
+- La IA se limitó a: copiar el starter a `activities/class-04/project/`, completar la
   migración `002` (historial), implementar `withTransaction`, el `request.mapper.js`, el
   `requests.store.js` sobre SQL parametrizado, el `requests.service.js` con los 5
   casos de uso y el `requests.routes.js` async con `GET /requests/:id/history` y la
@@ -50,7 +50,7 @@ Registro honesto de dónde y cómo se usó IA en la clase 04, siguiendo la regla
 
 | Fase | ¿IA? | Producto |
 | ---- | ---- | -------- |
-| Base starter v4 | Sí (autorizada) | código inicial en `proyecto/` |
+| Base starter v4 | Sí (autorizada) | código inicial en `project/` |
 | Diseño | No | `cuestionario-diseno.md` + documentos oficiales + refinamientos (índice, `FOR UPDATE`, history) |
 | Implementación | Sí (refinamientos del análisis) | ajustes a migración/store/mapper |
 | Verificación | No (terminal) | evidencia 11/11 en `test-matrix.md` |
