@@ -1,0 +1,15 @@
+{
+  "name": "request-frontend-05a",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Entrega 05A: interfaz grafica que consume la API real de la clase 05",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^7.1.1"
+  }
+}
