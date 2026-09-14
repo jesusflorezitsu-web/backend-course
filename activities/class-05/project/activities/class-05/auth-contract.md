@@ -52,7 +52,7 @@ Errores:
 | --------- | ---- | ---------- |
 | Campo controlado por el servidor en el body | 400 | SERVER_CONTROLLED_FIELD |
 | Email inválido | 400 | INVALID_EMAIL |
-| Password fuera de las reglas | 400 | WEAK_PASSWORD |
+| Password fuera de las reglas | 400 | INVALID_PASSWORD |
 | Email ya registrado | 409 | ACCOUNT_CANNOT_BE_CREATED |
 
 ## POST /auth/login
@@ -109,14 +109,14 @@ Errores:
 
 | Situación | HTTP | error.code |
 | --------- | ---- | ---------- |
-| Sin header Authorization o sin esquema Bearer | 401 | UNAUTHORIZED |
+| Sin header Authorization o sin esquema Bearer | 401 | AUTHENTICATION_REQUIRED |
 | Token inválido, alterado o expirado | 401 | INVALID_TOKEN |
 
 ## Semántica de errores (el criterio, no solo ejemplos)
 
 | Frase | Código HTTP | ¿Cuándo lo usas en esta API? |
 | ----- | ----------- | ---------------------------- |
-| "No sé quién eres" | 401 | No hay header Authorization, el esquema no es Bearer, el token está alterado/vencido (UNAUTHORIZED, INVALID_TOKEN) o el login falló con credenciales malas (INVALID_CREDENTIALS) |
+| "No sé quién eres" | 401 | No hay header Authorization, el esquema no es Bearer, el token está alterado/vencido (AUTHENTICATION_REQUIRED, INVALID_TOKEN) o el login falló con credenciales malas (INVALID_CREDENTIALS) |
 | "Sé quién eres; esto no" | 403 | El actor está identificado pero la operación no le corresponde por rol o por estado de la solicitud (ACTION_NOT_ALLOWED) |
 | "Para ti, no existe" | 404 | Un requester pide una solicitud ajena o heredada: responde idéntico a un id inexistente (RESOURCE_NOT_FOUND) |
 | "Existe, pero choca" | 409 | Email ya registrado (ACCOUNT_CANNOT_BE_CREATED), transición de estado inválida (INVALID_STATUS_TRANSITION) o mutación sobre solicitud cerrada (REQUEST_IN_TERMINAL_STATUS) |

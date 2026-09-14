@@ -1,54 +1,52 @@
 // ============================================================================
-// STARTER NOTE — Station 7 (design it in station 1, implement it here).
-//
 // Authorization policy: pure functions over an actor and (when relevant) a
-// request representation. No SQL, no HTTP. The middleware says WHO; these
-// functions say WHAT is allowed; the service keeps the use-case rules.
+// request row. No SQL, no HTTP. The middleware says WHO; these functions say
+// WHAT is allowed; the service keeps the use-case rules.
 //
-// The workshop access matrix is FIXED (the validator relies on it):
+// The workshop access matrix is FIXED:
 //   list all requests ......... agent
-//   list own requests ......... requester (scope it in SQL, station 6)
+//   list own requests ......... requester (scoped in SQL, requests.store)
 //   view / history ............ agent: any · requester: own only
 //   create .................... requester (agents do not create)
 //   edit title/description .... requester, own request, while open
 //   change priority ........... agent
 //   change status ............. agent (the state machine still applies)
 //
-// Legacy requests (createdBy === null) belong to nobody: only agents see
+// Legacy requests (created_by IS NULL) belong to nobody: only agents see
 // them. A requester can never match a null owner.
 // ============================================================================
 
+function isAgent(actor) {
+  return actor?.role === 'agent';
+}
+
 export function canListAllRequests(actor) {
-  // TODO (station 7)
-  throw new Error('TODO: canListAllRequests is not implemented yet.');
+  return isAgent(actor);
 }
 
 export function canViewRequest(actor, request) {
-  // TODO (station 6/7)
-  throw new Error('TODO: canViewRequest is not implemented yet.');
+  if (isAgent(actor)) return true;
+  return request?.created_by === actor?.userId;
 }
 
 export function canViewHistory(actor, request) {
-  // TODO (station 6/7)
-  throw new Error('TODO: canViewHistory is not implemented yet.');
+  return canViewRequest(actor, request);
 }
 
 export function canCreateRequest(actor) {
-  // TODO (station 7)
-  throw new Error('TODO: canCreateRequest is not implemented yet.');
+  return actor?.role === 'requester';
 }
 
 export function canEditContent(actor, request) {
-  // TODO (station 7)
-  throw new Error('TODO: canEditContent is not implemented yet.');
+  return actor?.role === 'requester' &&
+    request?.created_by === actor?.userId &&
+    request?.status === 'open';
 }
 
 export function canChangePriority(actor) {
-  // TODO (station 7)
-  throw new Error('TODO: canChangePriority is not implemented yet.');
+  return isAgent(actor);
 }
 
 export function canChangeStatus(actor) {
-  // TODO (station 7)
-  throw new Error('TODO: canChangeStatus is not implemented yet.');
+  return isAgent(actor);
 }

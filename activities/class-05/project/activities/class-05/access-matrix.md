@@ -50,7 +50,7 @@ Las solicitues sin propietario (`created_by IS NULL`, creadas antes de la
 clase 05) las ve **únicamente el agent** (en el listado y por id).
 
 Un requester nunca las ve: no aparecen en su `GET /requests` y un
-`GET /requests/:id` sobre una responde **`404 RESOURCE_NOT_FOUND`**, idéntica a
+`GET /requests/:id` sobre una responde **`404 REQUEST_NOT_FOUND`**, idéntica a
 un id inexistente. Razón: el alcance del requester es `created_by = usuario`;
 una fila sin dueño no le pertenece a nadie y no debe revelarse (privacidad y
 aislamiento de datos).

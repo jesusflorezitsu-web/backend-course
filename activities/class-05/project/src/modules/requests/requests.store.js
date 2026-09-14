@@ -1,16 +1,6 @@
-// ============================================================================
-// STARTER NOTE — Station 6 evolves this file. It arrives exactly as your
-// class 04 delivery left it. Target changes:
-//
-//   * add created_by to the selected columns (migration 004 already ran);
-//   * findAll: accept filters.createdBy and add `created_by = $n` to the
-//     WHERE — the ownership scope lives in SQL, not in JavaScript;
-//   * insertRequest: receive createdBy and include it in the INSERT
-//     (the service passes the authenticated actor, never the body);
-//   * insertStatusHistory: receive changedBy as a new parameter and write
-//     the changed_by column (migration 005);
-//   * findHistory: also select changed_by.
-// ============================================================================
+// Data access for requests. Values are parameterized; column names come from
+// this file only — identifiers are never derived from client input.
+// Ownership (created_by) lives in the SQL scope, not in JavaScript.
 
 import { pool } from '../../database/pool.js';
 
@@ -20,13 +10,12 @@ const REQUEST_COLUMNS = `
   description,
   priority,
   status,
+  created_by,
   created_at,
   updated_at
 `;
 
 export async function findAll(filters = {}, db = pool) {
-  // Values are parameterized; column names come from this file only —
-  // identifiers are never derived from client input.
   const conditions = [];
   const values = [];
 
@@ -37,6 +26,12 @@ export async function findAll(filters = {}, db = pool) {
   if (filters.priority) {
     values.push(filters.priority);
     conditions.push(`priority = $${values.length}`);
+  }
+  // The ownership scope: a requester sees only their own rows. Legacy rows
+  // (created_by IS NULL) never match a user id, so they stay agent-only.
+  if (filters.createdBy) {
+    values.push(filters.createdBy);
+    conditions.push(`created_by = $${values.length}`);
   }
 
   const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
@@ -55,13 +50,15 @@ export async function findById(id, db = pool) {
   return result.rows[0] ?? null;
 }
 
-export async function insertRequest({ title, description, priority }, db = pool) {
-  // The database generates id, status default, and both timestamps.
+export async function insertRequest({ title, description, priority, createdBy }, db = pool) {
+  // The database generates id, status default, and both timestamps. The owner
+  // is always supplied by the service from the authenticated actor — never
+  // from the body.
   const result = await db.query(
-    `INSERT INTO requests (title, description, priority)
-     VALUES ($1, $2, $3)
+    `INSERT INTO requests (title, description, priority, created_by)
+     VALUES ($1, $2, $3, $4)
      RETURNING ${REQUEST_COLUMNS}`,
-    [title, description, priority]
+    [title, description, priority, createdBy]
   );
   return result.rows[0];
 }
@@ -88,17 +85,19 @@ export async function updateRequest(id, changes, db = pool) {
   return result.rows[0] ?? null;
 }
 
-export async function insertStatusHistory(requestId, previousStatus, newStatus, db = pool) {
+export async function insertStatusHistory(requestId, previousStatus, newStatus, changedBy, db = pool) {
+  // The actor comes from the token; the API never accepts changed_by from the
+  // body. Legacy transitions (before class 5) keep a NULL actor on purpose.
   await db.query(
-    `INSERT INTO request_status_history (request_id, previous_status, new_status)
-     VALUES ($1, $2, $3)`,
-    [requestId, previousStatus, newStatus]
+    `INSERT INTO request_status_history (request_id, previous_status, new_status, changed_by)
+     VALUES ($1, $2, $3, $4)`,
+    [requestId, previousStatus, newStatus, changedBy]
   );
 }
 
 export async function findHistory(requestId, db = pool) {
   const result = await db.query(
-    `SELECT previous_status, new_status, changed_at
+    `SELECT previous_status, new_status, changed_by, changed_at
      FROM request_status_history
      WHERE request_id = $1
      ORDER BY id`,
