@@ -21,8 +21,8 @@ El `project/` es el **proyecto personal de fin de trimestre**: se mantiene reser
 crecerá clase a clase. Cada clase usa su propia carpeta:
 `activities/class-03/project/`, `activities/class-04/project/` y
 `activities/class-05/project/` (ver sus `README.md`). La clase 5 incluye además
-las entregas `05A/` (app web sobre la API real) y `05B/` (guía interactiva de
-autenticación).
+las entregas `entregas/05A/` (app web sobre la API real) y `entregas/05B/` (guía
+interactiva de autenticación).
 
 ## Estructura
 
@@ -33,7 +33,7 @@ autenticación).
 │   ├── class-02/          → Entrega 02
 │   ├── class-03/          → Entrega 03 (incluye project/ propio de la clase)
 │   ├── class-04/          → Entrega 04 (incluye project/ propio de la clase)
-│   └── class-05/          → Entrega 05 (incluye project/, 05A/ y 05B/)
+│   └── class-05/          → Entrega 05 (incluye project/, entregas/05A y 05B)
 ├── project/               → Proyecto personal de fin de trimestre (reservado)
 └── resources-notes/       → Apuntes y lecturas
 ```

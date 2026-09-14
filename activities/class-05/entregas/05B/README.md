@@ -7,7 +7,7 @@ reales: todos los ejemplos son ficticios y declarados como tales.
 ## Cómo verla
 
 ```bash
-cd activities/class-05/05B
+cd activities/class-05/entregas/05B
 npm install
 npm run dev        # http://localhost:5173
 npm run build      # build de producción (verificado)

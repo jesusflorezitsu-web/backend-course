@@ -17,7 +17,7 @@ npm start          # http://localhost:3000
 Frontend:
 
 ```bash
-cd activities/class-05/05A
+cd activities/class-05/entregas/05A
 cp .env.example .env    # VITE_API_URL=http://localhost:3000
 npm install
 npm run dev             # http://localhost:5173

@@ -6,7 +6,7 @@ decisiones visuales.
 
 ## Especificación inicial
 
-Crear en `/learn` (aquí `activities/class-05/05B`) una guía interactiva «El
+Crear en `/learn` (aquí `activities/class-05/entregas/05B`) una guía interactiva «El
 mundo de la autenticación» con los 20 contenidos obligatorios del enunciado.
 Cada artículo debe: dejar claras las aclaraciones pedidas (JWT formato,
 decode≠verify, firmado≠cifrado, OAuth=autorización delegada, OIDC=identidad,
