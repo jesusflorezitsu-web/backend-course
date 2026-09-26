@@ -1,7 +1,8 @@
 # FEATURE-206 — Request history endpoint
 
 Requested by: product team
-Status: open
+Status: delivered
+Delivery: `GET /requests/:id/history` implemented in `requests.service.js` + `requests.routes.js`; covered by the official validator (12/12 PASSED).
 
 ## Story
 

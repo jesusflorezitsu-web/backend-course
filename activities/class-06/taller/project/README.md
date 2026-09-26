@@ -17,9 +17,9 @@
 [x] Aplicación   npm run dev responde
 [x] Pruebas      npm test en verde ANTES de tocar nada
 [x] Bug          tickets/BUG-106.md corregido + prueba de regresión
-[ ] Feature      tickets/FEATURE-206.md implementado
-[ ] Validación   npm run validate:class-06 → PASSED
-[ ] Reflexión    activities/class-06/work-log.md completo
+[x] Feature      tickets/FEATURE-206.md implementado
+[x] Validación   npm run validate:class-06 → PASSED
+[x] Reflexión    activities/class-06/work-log.md completo
 ```
 
 ## Puesta en marcha
