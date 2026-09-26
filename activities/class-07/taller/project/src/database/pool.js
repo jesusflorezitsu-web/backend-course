@@ -2,6 +2,7 @@
 // database imports this pool; nobody creates their own.
 import "dotenv/config";
 import pg from "pg";
+import { logger } from "../logging/logger.js";
 
 const { Pool } = pg;
 
@@ -13,4 +14,15 @@ if (!process.env.DATABASE_URL) {
 
 export const pool = new Pool({
   connectionString: process.env.DATABASE_URL
+});
+
+// Idle clients can emit 'error' (for example when the server closes the
+// connection or the project gets paused). Without this handler that event
+// would crash the whole process; with it, the API stays alive and the next
+// query fails in a controlled way (translated to 503 by the routes).
+pool.on("error", (error) => {
+  logger.error("database_pool_error", {
+    errorCode: error.code ?? "UNKNOWN",
+    message: error.message
+  });
 });

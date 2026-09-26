@@ -29,11 +29,11 @@ una prueba.
 * [x] **Diagnóstico** — síntoma ≠ causa: hipótesis y comprobación
 * [x] **INC-701** — id inválido responde 400, con prueba de regresión
 * [x] **INC-702** — prioridad inválida responde 400, restricción intacta
-* [ ] **Error handler** — un solo lugar traduce errores a respuestas
-* [ ] **Request ID** — respuesta y log comparten identificador
-* [ ] **Logs** — una línea JSON por petición, sin datos sensibles
-* [ ] **Health/ready** — el proceso vive; la disponibilidad se comprueba
-* [ ] **Validación** — `npm run validate:class-07` en PASSED
+* [x] **Error handler** — un solo lugar traduce errores a respuestas
+* [x] **Request ID** — respuesta y log comparten identificador
+* [x] **Logs** — una línea JSON por petición, sin datos sensibles
+* [x] **Health/ready** — el proceso vive; la disponibilidad se comprueba
+* [x] **Validación** — `npm run validate:class-07` en PASSED
 
 ## Puesta en marcha (baseline)
 

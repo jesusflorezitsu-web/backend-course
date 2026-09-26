@@ -1,6 +1,6 @@
 # OPS-703 — Errores imposibles de rastrear
 
-**Tipo:** mejora operativa pedida por soporte · **Prioridad:** media · **Estado inicial:** reported · **Estado final:** —
+**Tipo:** mejora operativa pedida por soporte · **Prioridad:** media · **Estado inicial:** reported · **Estado final:** resolved
 
 ## Reporte de soporte (literal)
 
@@ -42,9 +42,9 @@ no puede explicar qué ocurrió cuando algo falla.
 
 ## Definición de terminado
 
-* [ ] Toda respuesta lleva `X-Request-Id`; todo error lleva `requestId` en el body.
-* [ ] La línea de log de una petición se encuentra buscando el mismo requestId.
-* [ ] Los errores inesperados responden un 500 genérico y dejan el detalle en el log.
-* [ ] `GET /health` responde 200 aunque la base esté caída.
-* [ ] `GET /ready` responde 200 con base disponible y 503 sin ella.
-* [ ] Las pruebas de trazabilidad y de health/readiness están en verde.
+* [x] Toda respuesta lleva `X-Request-Id`; todo error lleva `requestId` en el body.
+* [x] La línea de log de una petición se encuentra buscando el mismo requestId.
+* [x] Los errores inesperados responden un 500 genérico y dejan el detalle en el log.
+* [x] `GET /health` responde 200 aunque la base esté caída.
+* [x] `GET /ready` responde 200 con base disponible y 503 sin ella.
+* [x] Las pruebas de trazabilidad y de health/readiness están en verde.

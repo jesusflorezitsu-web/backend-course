@@ -159,6 +159,8 @@ export async function patchRequest(actor, id, body) {
     throw new AppError('contract', 'INVALID_STATUS',
       `Unknown status "${changes.status}". Valid values: ${STATUSES.join(', ')}.`);
   }
+  // The priority is validated against the contract BEFORE any SQL runs,
+  // right next to the status check (INC-702).
   if (changes.priority !== undefined && !PRIORITIES.includes(changes.priority)) {
     throw new AppError('contract', 'INVALID_PRIORITY',
       'Priority must be low, medium or high.');
