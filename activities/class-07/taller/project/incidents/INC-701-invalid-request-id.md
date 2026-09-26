@@ -1,6 +1,6 @@
 # INC-701 — Identificador inválido produce error interno
 
-**Tipo:** bug reportado por soporte · **Prioridad:** alta · **Estado inicial:** reported · **Estado final:** —
+**Tipo:** bug reportado por soporte · **Prioridad:** alta · **Estado inicial:** reported · **Estado final:** resolved
 
 ## Reporte de soporte (literal)
 
@@ -50,8 +50,8 @@ El terminal del servidor muestra un error técnico de PostgreSQL.
 
 ## Definición de terminado
 
-* [ ] El incidente se reprodujo antes de tocar código (evidencia en `incident-report.md`).
-* [ ] `GET /requests/not-a-number` responde `400 INVALID_REQUEST_ID`.
-* [ ] `GET /requests/999999999` sigue respondiendo `404`.
-* [ ] Existe una prueba de regresión que cubre los casos límite.
-* [ ] `npm test` completo en verde.
+* [x] El incidente se reprodujo antes de tocar código (evidencia en `incident-report.md`).
+* [x] `GET /requests/not-a-number` responde `400 INVALID_REQUEST_ID`.
+* [x] `GET /requests/999999999` sigue respondiendo `404`.
+* [x] Existe una prueba de regresión que cubre los casos límite.
+* [x] `npm test` completo en verde.

@@ -1,6 +1,6 @@
 # INC-702 — Prioridad inválida produce error interno
 
-**Tipo:** bug reportado por soporte · **Prioridad:** alta · **Estado inicial:** reported · **Estado final:** —
+**Tipo:** bug reportado por soporte · **Prioridad:** alta · **Estado inicial:** reported · **Estado final:** resolved
 
 ## Reporte de soporte (literal)
 
@@ -60,8 +60,8 @@ El terminal muestra que una **restricción de PostgreSQL** rechazó el valor.
 
 ## Definición de terminado
 
-* [ ] El incidente se reprodujo antes de tocar código (evidencia en `incident-report.md`).
-* [ ] `PATCH` y `POST` con prioridad inválida responden `400 INVALID_PRIORITY`.
-* [ ] Un cambio de prioridad válido sigue funcionando (`low` → `high` responde 200).
-* [ ] La restricción CHECK sigue existiendo en la base.
-* [ ] Existe una prueba de regresión y `npm test` completo está en verde.
+* [x] El incidente se reprodujo antes de tocar código (evidencia en `incident-report.md`).
+* [x] `PATCH` y `POST` con prioridad inválida responden `400 INVALID_PRIORITY`.
+* [x] Un cambio de prioridad válido sigue funcionando (`low` → `high` responde 200).
+* [x] La restricción CHECK sigue existiendo en la base.
+* [x] Existe una prueba de regresión y `npm test` completo está en verde.

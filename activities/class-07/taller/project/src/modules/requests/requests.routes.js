@@ -3,6 +3,10 @@
 // and typed errors into HTTP responses. It contains no SQL and no domain
 // rules. The router assumes app.js mounted it behind `authenticate`, so
 // req.auth is always present here.
+//
+// The routes hand over the RAW parameter on purpose: the service decides
+// what a valid id is, so a malformed value never becomes SQL input (see
+// INVALID_REQUEST_ID, INC-701).
 
 import express from 'express';
 import {
@@ -27,7 +31,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id/history', async (req, res) => {
   try {
-    res.status(200).json(await getHistory(req.auth, Number(req.params.id)));
+    res.status(200).json(await getHistory(req.auth, req.params.id));
   } catch (error) {
     respondError(res, error);
   }
@@ -35,7 +39,7 @@ router.get('/:id/history', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    res.status(200).json(await getRequest(req.auth, Number(req.params.id)));
+    res.status(200).json(await getRequest(req.auth, req.params.id));
   } catch (error) {
     respondError(res, error);
   }
@@ -51,7 +55,7 @@ router.post('/', async (req, res) => {
 
 router.patch('/:id', async (req, res) => {
   try {
-    res.status(200).json(await patchRequest(req.auth, Number(req.params.id), req.body));
+    res.status(200).json(await patchRequest(req.auth, req.params.id, req.body));
   } catch (error) {
     respondError(res, error);
   }

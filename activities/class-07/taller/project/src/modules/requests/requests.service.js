@@ -32,6 +32,18 @@ const UPDATABLE_FIELDS = ['title', 'description', 'priority', 'status'];
 // violation, answered explicitly — never silently ignored.
 const SERVER_CONTROLLED_FIELDS = ['id', 'createdBy', 'createdAt', 'updatedAt', 'changedBy'];
 
+// The COMPLETE value must be a positive integer. /^\d+$/ alone would let
+// "0" pass, and a naive parseInt happily reads "12abc" as 12 — neither is
+// what the client sent. Validating before any SQL runs keeps technical
+// errors from PostgreSQL out of the response (INC-701).
+function parseRequestId(value) {
+  if (!/^\d+$/.test(value ?? '') || Number(value) === 0) {
+    throw new AppError('contract', 'INVALID_REQUEST_ID',
+      'Request id must be a positive integer.');
+  }
+  return Number(value);
+}
+
 // A foreign resource answers exactly like a missing one: same status,
 // same code, same message. A different answer would confirm it exists.
 function notFound(id) {
@@ -72,7 +84,8 @@ export async function listRequests(actor, filters) {
 }
 
 export async function getRequest(actor, id) {
-  const row = await findById(id);
+  const requestId = parseRequestId(id);
+  const row = await findById(requestId);
   if (!row) throw notFound(id);
 
   const request = mapRequestRow(row);
@@ -92,6 +105,15 @@ export async function createRequest(actor, input) {
 
   if (typeof title !== 'string' || title.trim() === '') {
     throw new AppError('contract', 'TITLE_REQUIRED', 'A request needs a non-empty title.');
+  }
+
+  // First defense: the application validates the contract before any SQL
+  // runs. The PostgreSQL CHECK constraint stays as a second defense
+  // (INC-702) — this validation is what turns "critical" into a readable
+  // 400 instead of a technical 500.
+  if (priority !== undefined && !PRIORITIES.includes(priority)) {
+    throw new AppError('contract', 'INVALID_PRIORITY',
+      'Priority must be low, medium or high.');
   }
 
   // Creation is a unit of work: the request AND its birth history
@@ -118,6 +140,7 @@ export async function createRequest(actor, input) {
 }
 
 export async function patchRequest(actor, id, body) {
+  const requestId = parseRequestId(id);
   rejectServerControlledFields(body);
 
   const changes = {};
@@ -136,12 +159,16 @@ export async function patchRequest(actor, id, body) {
     throw new AppError('contract', 'INVALID_STATUS',
       `Unknown status "${changes.status}". Valid values: ${STATUSES.join(', ')}.`);
   }
+  if (changes.priority !== undefined && !PRIORITIES.includes(changes.priority)) {
+    throw new AppError('contract', 'INVALID_PRIORITY',
+      'Priority must be low, medium or high.');
+  }
   if (changes.title !== undefined) changes.title = changes.title.trim();
 
   // Read, authorize against the CURRENT state, validate, write and record
   // history — all with the same client, as one unit of work.
   const row = await withTransaction(async (client) => {
-    const current = await findById(id, client);
+    const current = await findById(requestId, client);
     if (!current) throw notFound(id);
 
     const request = mapRequestRow(current);
@@ -175,7 +202,7 @@ export async function patchRequest(actor, id, body) {
         `A request cannot move from ${current.status} to ${changes.status}.`);
     }
 
-    const updated = await updateRequest(id, changes, client);
+    const updated = await updateRequest(requestId, changes, client);
     // The history actor is the authenticated identity — changedBy can
     // never arrive from the body. Each kind of change leaves its own event.
     if (statusChanges) {
@@ -203,12 +230,13 @@ export async function patchRequest(actor, id, body) {
 }
 
 export async function getHistory(actor, id) {
-  const row = await findById(id);
+  const requestId = parseRequestId(id);
+  const row = await findById(requestId);
   if (!row) throw notFound(id);
 
   const request = mapRequestRow(row);
   if (!canViewHistory(actor, request)) throw notFound(id);
 
-  const rows = await findHistory(id);
+  const rows = await findHistory(requestId);
   return rows.map(mapHistoryEventRow);
 }

@@ -25,10 +25,10 @@ una prueba.
 ## Tablero del taller
 
 * [x] **Baseline** — el sistema funciona antes de tocarlo
-* [ ] **Reproducción** — los tres incidentes reproducidos con evidencia
-* [ ] **Diagnóstico** — síntoma ≠ causa: hipótesis y comprobación
-* [ ] **INC-701** — id inválido responde 400, con prueba de regresión
-* [ ] **INC-702** — prioridad inválida responde 400, restricción intacta
+* [x] **Reproducción** — los tres incidentes reproducidos con evidencia
+* [x] **Diagnóstico** — síntoma ≠ causa: hipótesis y comprobación
+* [x] **INC-701** — id inválido responde 400, con prueba de regresión
+* [x] **INC-702** — prioridad inválida responde 400, restricción intacta
 * [ ] **Error handler** — un solo lugar traduce errores a respuestas
 * [ ] **Request ID** — respuesta y log comparten identificador
 * [ ] **Logs** — una línea JSON por petición, sin datos sensibles
