@@ -1,0 +1,17 @@
+ASSESSMENT REPORT VALIDATION — ITSU-KNOWLEDGE-09-1.0
+
+Assessment protocol ................ PASS
+Evaluation ID ...................... PASS
+Five questions ..................... PASS
+Score values ....................... PASS
+JSON schema ........................ PASS
+Conversation transcript ............ FAIL  (missing COMENZAR or the integrity declaration)
+Teacher digest length .............. PASS
+
+RAW SCORE: 55/80
+NORMALIZED SCORE: 68.8/100
+ACTION: NONE
+FINAL RESULT: INVALID
+
+This validator checks format and arithmetic. It does not replace
+pedagogical judgement: the teacher reviews the report and may verify orally.

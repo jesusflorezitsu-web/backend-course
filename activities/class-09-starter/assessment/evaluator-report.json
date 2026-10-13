@@ -1,0 +1,74 @@
+{
+  "protocolVersion": "ITSU-KNOWLEDGE-09-1.0",
+  "rubricVersion": "BACKEND-01-08-K1",
+  "evaluationId": "K09-jesusflorez-itsu-cca81c4",
+  "studentId": "jesusflorez-itsu",
+  "commit": "cca81c4",
+  "variant": "B",
+  "status": "COMPLETE",
+  "action": "NONE",
+  "questions": [
+    {
+      "questionId": "Q1",
+      "topics": ["HTTP", "request flow", "layered architecture"],
+      "levels": { "conceptual": 3, "grounding": 3, "reasoning": 3, "verification": 2 },
+      "evidence": ["El recorrido completo de una petición PATCH /requests/:id desde que ingresa al servidor hasta que se emite la respuesta sigue este flujo secuencial: Router -> Middleware -> Controller -> Service/Store."],
+      "strength": "Dominio claro de la separación por capas en Node.js/Express.",
+      "gap": "",
+      "rectification": "",
+      "confidence": "high"
+    },
+    {
+      "questionId": "Q2",
+      "topics": ["Transactions", "ACID", "atomicity", "PostgreSQL"],
+      "levels": { "conceptual": 3, "grounding": 3, "reasoning": 3, "verification": 2 },
+      "evidence": ["Uso de un cliente dedicado pool.connect() y bloque try...catch...finally para BEGIN, COMMIT, ROLLBACK."],
+      "strength": "Excelente manejo de consistencia transaccional entre requests y request_history.",
+      "gap": "",
+      "rectification": "",
+      "confidence": "high"
+    },
+    {
+      "questionId": "Q3",
+      "topics": ["HTTP semantics", "status codes", "Conflict"],
+      "levels": { "conceptual": 3, "grounding": 3, "reasoning": 3, "verification": 2 },
+      "evidence": ["Diferenciación exacta entre 400 Bad Request y 409 Conflict según el estado actual del recurso."],
+      "strength": "Precisión conceptual sobre la semántica HTTP REST.",
+      "gap": "",
+      "rectification": "",
+      "confidence": "high"
+    },
+    {
+      "questionId": "Q4",
+      "topics": ["Repository structure", "files and functions"],
+      "levels": { "conceptual": 3, "grounding": 3, "reasoning": 3, "verification": 2 },
+      "evidence": ["Identificación de archivos clave como requests.routes.js, requests.controller.js y requests.service.js."],
+      "strength": "Buena correlación entre la teoría y la estructura real del repositorio.",
+      "gap": "",
+      "rectification": "",
+      "confidence": "high"
+    },
+    {
+      "questionId": "Q5",
+      "topics": ["Business invariants", "immutability"],
+      "levels": { "conceptual": 3, "grounding": 3, "reasoning": 3, "verification": 2 },
+      "evidence": ["Reconocimiento de la inmutabilidad de solicitudes cerradas o canceladas."],
+      "strength": "Comprensión sólida de reglas de negocio y restricciones de estado.",
+      "gap": "",
+      "rectification": "",
+      "confidence": "high"
+    }
+  ],
+  "priorityGaps": [],
+  "strengths": ["Dominio excelente de la arquitectura por capas", "Implementación robusta de transacciones ACID en PostgreSQL", "Comprensión precisa de la semántica HTTP (400 vs 409)"],
+  "recommendedStudyActions": ["Profundizar en patrones avanzados de manejo de concurrencia optimista y pesimista", "Explorar pruebas de integración automatizadas para flujos transaccionales", "Revisar logs de auditoría distribuidos en arquitecturas de microservicios"],
+  "reviewSignals": ["NONE"],
+  "teacherReview": {
+    "priority": "low",
+    "oralVerificationRecommended": false,
+    "questions": [],
+    "minimumExpectedAnswers": [],
+    "reason": "El estudiante demostró un dominio completo y excelente de todos los conceptos evaluados sin vacíos significativos.",
+    "digest": "Estudiante con dominio sobresaliente en arquitectura backend, transacciones ACID e HTTP semántico."
+  }
+}
